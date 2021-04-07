@@ -1,0 +1,4 @@
+gcc:i386
+libxext-dev:i386
+libX11-dev:i386
+libc6-dev:i386
