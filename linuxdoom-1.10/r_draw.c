@@ -24,8 +24,8 @@
 //-----------------------------------------------------------------------------
 
 
-static const char
-rcsid[] = "$Id: r_draw.c,v 1.4 1997/02/03 16:47:55 b1 Exp $";
+//static const char
+//rcsid[] = "$Id: r_draw.c,v 1.4 1997/02/03 16:47:55 b1 Exp $";
 
 
 #include "doomdef.h"
@@ -42,6 +42,7 @@ rcsid[] = "$Id: r_draw.c,v 1.4 1997/02/03 16:47:55 b1 Exp $";
 // State.
 #include "doomstat.h"
 
+#include <stdint.h>
 
 // ?
 #define MAXWIDTH			1120
@@ -360,15 +361,14 @@ void R_DrawFuzzColumn (void)
 	// Clamp table lookup index.
 	if (++fuzzpos == FUZZTABLE) 
 	    fuzzpos = 0;
-	
+
 	dest += SCREENWIDTH;
 
 	frac += fracstep; 
     } while (count--); 
-} 
- 
-  
- 
+}
+
+
 
 //
 // R_DrawTranslatedColumn
@@ -382,18 +382,18 @@ void R_DrawFuzzColumn (void)
 byte*	dc_translation;
 byte*	translationtables;
 
-void R_DrawTranslatedColumn (void) 
-{ 
-    int			count; 
-    byte*		dest; 
+void R_DrawTranslatedColumn ()
+{
+    int			count;
+    byte*		dest;
     fixed_t		frac;
-    fixed_t		fracstep;	 
- 
-    count = dc_yh - dc_yl; 
-    if (count < 0) 
-	return; 
-				 
-#ifdef RANGECHECK 
+    fixed_t		fracstep;
+
+    count = dc_yh - dc_yl;
+    if (count < 0)
+	return;
+
+#ifdef RANGECHECK
     if ((unsigned)dc_x >= SCREENWIDTH
 	|| dc_yl < 0
 	|| dc_yh >= SCREENHEIGHT)
@@ -401,8 +401,8 @@ void R_DrawTranslatedColumn (void)
 	I_Error ( "R_DrawColumn: %i to %i at %i",
 		  dc_yl, dc_yh, dc_x);
     }
-    
-#endif 
+
+#endif
 
 
     // WATCOM VGA specific.
@@ -428,23 +428,23 @@ void R_DrawTranslatedColumn (void)
     dest = ylookup[dc_yl] + columnofs[dc_x]; 
 
     // Looks familiar.
-    fracstep = dc_iscale; 
+    fracstep = dc_iscale;
     frac = dc_texturemid + (dc_yl-centery)*fracstep; 
 
     // Here we do an additional index re-mapping.
-    do 
+    do
     {
 	// Translation tables are used
 	//  to map certain colorramps to other ones,
 	//  used with PLAY sprites.
 	// Thus the "green" ramp of the player 0 sprite
-	//  is mapped to gray, red, black/indigo. 
+	//  is mapped to gray, red, black/indigo.
 	*dest = dc_colormap[dc_translation[dc_source[frac>>FRACBITS]]];
 	dest += SCREENWIDTH;
-	
-	frac += fracstep; 
-    } while (count--); 
-} 
+
+	frac += fracstep;
+    } while (count--);
+}
 
 
 
@@ -459,10 +459,10 @@ void R_DrawTranslatedColumn (void)
 void R_InitTranslationTables (void)
 {
     int		i;
-	
+
     translationtables = Z_Malloc (256*3+255, PU_STATIC, 0);
-    translationtables = (byte *)(( (int)translationtables + 255 )& ~255);
-    
+    translationtables = (byte *)(( (intptr_t)translationtables + 255 )& ~255);
+
     // translate just the 16 green colors
     for (i=0 ; i<256 ; i++)
     {

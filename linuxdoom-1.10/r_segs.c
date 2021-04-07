@@ -22,8 +22,8 @@
 //-----------------------------------------------------------------------------
 
 
-static const char
-rcsid[] = "$Id: r_segs.c,v 1.3 1997/01/29 20:10:19 b1 Exp $";
+//static const char
+//rcsid[] = "$Id: r_segs.c,v 1.3 1997/01/29 20:10:19 b1 Exp $";
 
 
 
@@ -43,10 +43,10 @@ rcsid[] = "$Id: r_segs.c,v 1.3 1997/01/29 20:10:19 b1 Exp $";
 // OPTIMIZE: closed two sided lines as single sided
 
 // True if any of the segs textures might be visible.
-boolean		segtextured;	
+boolean		segtextured;
 
 // False if the back side is the same plane.
-boolean		markfloor;	
+boolean		markfloor;
 boolean		markceiling;
 
 boolean		maskedtexture;
@@ -57,7 +57,7 @@ int		midtexture;
 
 angle_t		rw_normalangle;
 // angle to line origin
-int		rw_angle1;	
+int		rw_angle1;
 
 //
 // regular wall
@@ -109,7 +109,7 @@ R_RenderMaskedSegRange
     column_t*	col;
     int		lightnum;
     int		texnum;
-    
+
     // Calculate light table.
     // Use different light tables
     //   for horizontal / vertical / diagonal. Diagonal?
@@ -118,7 +118,7 @@ R_RenderMaskedSegRange
     frontsector = curline->frontsector;
     backsector = curline->backsector;
     texnum = texturetranslation[curline->sidedef->midtexture];
-	
+
     lightnum = (frontsector->lightlevel >> LIGHTSEGSHIFT)+extralight;
 
     if (curline->v1->y == curline->v2->y)
@@ -126,7 +126,7 @@ R_RenderMaskedSegRange
     else if (curline->v1->x == curline->v2->x)
 	lightnum++;
 
-    if (lightnum < 0)		
+    if (lightnum < 0)
 	walllights = scalelight[0];
     else if (lightnum >= LIGHTLEVELS)
 	walllights = scalelight[LIGHTLEVELS-1];
@@ -135,11 +135,11 @@ R_RenderMaskedSegRange
 
     maskedtexturecol = ds->maskedtexturecol;
 
-    rw_scalestep = ds->scalestep;		
+    rw_scalestep = ds->scalestep;
     spryscale = ds->scale1 + (x1 - ds->x1)*rw_scalestep;
     mfloorclip = ds->sprbottomclip;
     mceilingclip = ds->sprtopclip;
-    
+
     // find positioning
     if (curline->linedef->flags & ML_DONTPEGBOTTOM)
     {
@@ -154,10 +154,10 @@ R_RenderMaskedSegRange
 	dc_texturemid = dc_texturemid - viewz;
     }
     dc_texturemid += curline->sidedef->rowoffset;
-			
+
     if (fixedcolormap)
 	dc_colormap = fixedcolormap;
-    
+
     // draw the columns
     for (dc_x = x1 ; dc_x <= x2 ; dc_x++)
     {
@@ -173,20 +173,20 @@ R_RenderMaskedSegRange
 
 		dc_colormap = walllights[index];
 	    }
-			
+
 	    sprtopscreen = centeryfrac - FixedMul(dc_texturemid, spryscale);
 	    dc_iscale = 0xffffffffu / (unsigned)spryscale;
-	    
+
 	    // draw the texture
-	    col = (column_t *)( 
+	    col = (column_t *)(
 		(byte *)R_GetColumn(texnum,maskedtexturecol[dc_x]) -3);
-			
+
 	    R_DrawMaskedColumn (col);
 	    maskedtexturecol[dc_x] = MAXSHORT;
 	}
 	spryscale += rw_scalestep;
     }
-	
+
 }
 
 

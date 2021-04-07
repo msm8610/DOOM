@@ -21,13 +21,13 @@
 //-----------------------------------------------------------------------------
 
 
-static const char
-rcsid[] = "$Id: g_game.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
+//static const char
+//rcsid[] = "$Id: g_game.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
 
 #include <string.h>
 #include <stdlib.h>
 
-#include "doomdef.h" 
+#include "doomdef.h"
 #include "doomstat.h"
 
 #include "z_zone.h"
@@ -51,11 +51,8 @@ rcsid[] = "$Id: g_game.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
 
 // Needs access to LFB.
 #include "v_video.h"
-
 #include "w_wad.h"
-
-#include "p_local.h" 
-
+#include "p_local.h"
 #include "s_sound.h"
 
 // Data.
@@ -81,7 +78,7 @@ void	G_ReadDemoTiccmd (ticcmd_t* cmd);
 void	G_WriteDemoTiccmd (ticcmd_t* cmd); 
 void	G_PlayerReborn (int player); 
 void	G_InitNew (skill_t skill, int episode, int map); 
- 
+
 void	G_DoReborn (int playernum); 
  
 void	G_DoLoadLevel (void); 

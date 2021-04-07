@@ -21,8 +21,8 @@
 //
 //-----------------------------------------------------------------------------
 
-static const char
-rcsid[] = "$Id: z_zone.c,v 1.4 1997/02/03 16:47:58 b1 Exp $";
+//static const char
+//rcsid[] = "$Id: z_zone.c,v 1.4 1997/02/03 16:47:58 b1 Exp $";
 
 #include "z_zone.h"
 #include "i_system.h"
@@ -38,8 +38,8 @@ rcsid[] = "$Id: z_zone.c,v 1.4 1997/02/03 16:47:58 b1 Exp $";
 //
 // It is of no value to free a cachable block,
 //  because it will get overwritten automatically if needed.
-// 
- 
+//
+
 #define ZONEID	0x1d4a11
 
 
@@ -50,9 +50,8 @@ typedef struct
 
     // start / end cap for linked list
     memblock_t	blocklist;
-    
     memblock_t*	rover;
-    
+
 } memzone_t;
 
 
@@ -67,20 +66,20 @@ memzone_t*	mainzone;
 void Z_ClearZone (memzone_t* zone)
 {
     memblock_t*		block;
-	
+
     // set the entire zone to one free block
     zone->blocklist.next =
 	zone->blocklist.prev =
 	block = (memblock_t *)( (byte *)zone + sizeof(memzone_t) );
-    
+
     zone->blocklist.user = (void *)zone;
     zone->blocklist.tag = PU_STATIC;
     zone->rover = block;
-	
+
     block->prev = block->next = &zone->blocklist;
-    
+
     // NULL indicates a free block.
-    block->user = NULL;	
+    block->user = NULL;
 
     block->size = zone->size - sizeof(memzone_t);
 }
@@ -106,12 +105,12 @@ void Z_Init (void)
     mainzone->blocklist.user = (void *)mainzone;
     mainzone->blocklist.tag = PU_STATIC;
     mainzone->rover = block;
-	
+
     block->prev = block->next = &mainzone->blocklist;
 
     // NULL indicates a free block.
     block->user = NULL;
-    
+
     block->size = mainzone->size - sizeof(memzone_t);
 }
 
@@ -123,26 +122,26 @@ void Z_Free (void* ptr)
 {
     memblock_t*		block;
     memblock_t*		other;
-	
+
     block = (memblock_t *) ( (byte *)ptr - sizeof(memblock_t));
 
     if (block->id != ZONEID)
 	I_Error ("Z_Free: freed a pointer without ZONEID");
-		
+
     if (block->user > (void **)0x100)
     {
 	// smaller values are not pointers
 	// Note: OS-dependend?
-	
+
 	// clear the user's mark
 	*block->user = 0;
     }
 
     // mark as free
-    block->user = NULL;	
+    block->user = NULL;
     block->tag = 0;
     block->id = 0;
-	
+
     other = block->prev;
 
     if (!other->user)
@@ -157,7 +156,7 @@ void Z_Free (void* ptr)
 
 	block = other;
     }
-	
+
     other = block->next;
     if (!other->user)
     {
@@ -193,7 +192,7 @@ Z_Malloc
     memblock_t*	base;
 
     size = (size + 3) & ~3;
-    
+
     // scan through the block list,
     // looking for the first free block
     // of sufficient size,
@@ -201,17 +200,17 @@ Z_Malloc
 
     // account for size of block header
     size += sizeof(memblock_t);
-    
+
     // if there is a free block behind the rover,
     //  back up over them
     base = mainzone->rover;
-    
+
     if (!base->prev->user)
 	base = base->prev;
-	
+
     rover = base;
     start = base->prev;
-	
+
     do
     {
 	if (rover == start)
@@ -219,7 +218,7 @@ Z_Malloc
 	    // scanned all the way around the list
 	    I_Error ("Z_Malloc: failed on allocation of %i bytes", size);
 	}
-	
+
 	if (rover->user)
 	{
 	    if (rover->tag < PU_PURGELEVEL)
@@ -243,16 +242,16 @@ Z_Malloc
 	    rover = rover->next;
     } while (base->user || base->size < size);
 
-    
+
     // found a block big enough
     extra = base->size - size;
-    
+
     if (extra >  MINFRAGMENT)
     {
 	// there will be a free fragment after the allocated block
 	newblock = (memblock_t *) ((byte *)base + size );
 	newblock->size = extra;
-	
+
 	// NULL indicates free block.
 	newblock->user = NULL;	
 	newblock->tag = 0;

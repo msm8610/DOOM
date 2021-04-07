@@ -21,7 +21,7 @@
 //
 //-----------------------------------------------------------------------------
 
-static const char rcsid[] = "$Id: m_random.c,v 1.1 1997/02/03 22:45:11 b1 Exp $";
+//static const char rcsid[] = "$Id: m_random.c,v 1.1 1997/02/03 22:45:11 b1 Exp $";
 
 
 //
@@ -70,7 +70,4 @@ void M_ClearRandom (void)
 {
     rndindex = prndindex = 0;
 }
-
-
-
 

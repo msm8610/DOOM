@@ -24,7 +24,7 @@
 //-----------------------------------------------------------------------------
 
 
-static const char rcsid[] = "$Id: r_main.c,v 1.5 1997/02/03 22:45:12 b1 Exp $";
+//static const char rcsid[] = "$Id: r_main.c,v 1.5 1997/02/03 22:45:12 b1 Exp $";
 
 
 
@@ -45,14 +45,14 @@ static const char rcsid[] = "$Id: r_main.c,v 1.5 1997/02/03 22:45:12 b1 Exp $";
 
 
 // Fineangles in the SCREENWIDTH wide window.
-#define FIELDOFVIEW		2048	
+#define FIELDOFVIEW		2048
 
 
 
 int			viewangleoffset;
 
 // increment every time a check is made
-int			validcount = 1;		
+int			validcount = 1;	
 
 
 lighttable_t*		fixedcolormap;

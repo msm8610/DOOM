@@ -20,8 +20,8 @@
 //
 //-----------------------------------------------------------------------------
 
-static const char
-rcsid[] = "$Id: p_doors.c,v 1.4 1997/02/03 16:47:53 b1 Exp $";
+//static const char
+//rcsid[] = "$Id: p_doors.c,v 1.4 1997/02/03 16:47:53 b1 Exp $";
 
 
 #include "z_zone.h"
@@ -47,7 +47,7 @@ slidename_t	slideFrameNames[MAXSLIDEDOORS] =
 {
     {"GDOORF1","GDOORF2","GDOORF3","GDOORF4",	// front
      "GDOORB1","GDOORB2","GDOORB3","GDOORB4"},	// back
-	 
+ 
     {"\0","\0","\0","\0"}
 };
 #endif
@@ -63,7 +63,7 @@ slidename_t	slideFrameNames[MAXSLIDEDOORS] =
 void T_VerticalDoor (vldoor_t* door)
 {
     result_e	res;
-	
+
     switch(door->direction)
     {
       case 0:
@@ -77,25 +77,25 @@ void T_VerticalDoor (vldoor_t* door)
 		S_StartSound((mobj_t *)&door->sector->soundorg,
 			     sfx_bdcls);
 		break;
-		
+
 	      case normal:
 		door->direction = -1; // time to go back down
 		S_StartSound((mobj_t *)&door->sector->soundorg,
 			     sfx_dorcls);
 		break;
-		
+
 	      case close30ThenOpen:
 		door->direction = 1;
 		S_StartSound((mobj_t *)&door->sector->soundorg,
 			     sfx_doropn);
 		break;
-		
+
 	      default:
 		break;
 	    }
 	}
 	break;
-	
+
       case 2:
 	//  INITIAL WAIT
 	if (!--door->topcountdown)
@@ -108,13 +108,13 @@ void T_VerticalDoor (vldoor_t* door)
 		S_StartSound((mobj_t *)&door->sector->soundorg,
 			     sfx_doropn);
 		break;
-		
+
 	      default:
 		break;
 	    }
 	}
 	break;
-	
+
       case -1:
 	// DOWN
 	res = T_MovePlane(door->sector,
@@ -132,18 +132,18 @@ void T_VerticalDoor (vldoor_t* door)
 		S_StartSound((mobj_t *)&door->sector->soundorg,
 			     sfx_bdcls);
 		break;
-		
+
 	      case normal:
 	      case close:
 		door->sector->specialdata = NULL;
 		P_RemoveThinker (&door->thinker);  // unlink and free
 		break;
-		
+
 	      case close30ThenOpen:
 		door->direction = 0;
 		door->topcountdown = 35*30;
 		break;
-		
+
 	      default:
 		break;
 	    }
@@ -155,7 +155,7 @@ void T_VerticalDoor (vldoor_t* door)
 	      case blazeClose:
 	      case close:		// DO NOT GO BACK UP!
 		break;
-		
+
 	      default:
 		door->direction = 1;
 		S_StartSound((mobj_t *)&door->sector->soundorg,
@@ -164,14 +164,14 @@ void T_VerticalDoor (vldoor_t* door)
 	    }
 	}
 	break;
-	
+
       case 1:
 	// UP
 	res = T_MovePlane(door->sector,
 			  door->speed,
 			  door->topheight,
 			  false,1,door->direction);
-	
+
 	if (res == pastdest)
 	{
 	    switch(door->type)

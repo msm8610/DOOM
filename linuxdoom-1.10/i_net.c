@@ -20,8 +20,8 @@
 //
 //-----------------------------------------------------------------------------
 
-static const char
-rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
+//static const char
+//rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 
 #include <stdlib.h>
 #include <string.h>
@@ -61,7 +61,7 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #define ntohs(x) \
         ((unsigned short int)((((unsigned short int)(x) & 0x00ff) << 8) | \
                               (((unsigned short int)(x) & 0xff00) >> 8))) \
-	  
+
 #define htonl(x) ntohl(x)
 #define htons(x) ntohs(x)
 
@@ -90,12 +90,12 @@ void	(*netsend) (void);
 int UDPsocket (void)
 {
     int	s;
-	
+
     // allocate a socket
     s = socket (PF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (s<0)
 	I_Error ("can't create socket: %s",strerror(errno));
-		
+
     return s;
 }
 
@@ -109,12 +109,12 @@ BindToLocalPort
 {
     int			v;
     struct sockaddr_in	address;
-	
+
     memset (&address, 0, sizeof(address));
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
     address.sin_port = port;
-			
+
     v = bind (s, (void *)&address, sizeof(address));
     if (v == -1)
 	I_Error ("BindToPort: bind: %s", strerror(errno));
@@ -128,7 +128,7 @@ void PacketSend (void)
 {
     int		c;
     doomdata_t	sw;
-				
+
     // byte swap
     sw.checksum = htonl(netbuffer->checksum);
     sw.player = netbuffer->player;
@@ -144,12 +144,12 @@ void PacketSend (void)
 	sw.cmds[c].chatchar = netbuffer->cmds[c].chatchar;
 	sw.cmds[c].buttons = netbuffer->cmds[c].buttons;
     }
-		
-    //printf ("sending %i\n",gametic);		
+
+    //printf ("sending %i\n",gametic);
     c = sendto (sendsocket , &sw, doomcom->datalength
 		,0,(void *)&sendaddress[doomcom->remotenode]
 		,sizeof(sendaddress[doomcom->remotenode]));
-	
+
     //	if (c == -1)
     //		I_Error ("SendPacket error: %s",strerror(errno));
 }
@@ -165,7 +165,7 @@ void PacketGet (void)
     struct sockaddr_in	fromaddress;
     int			fromlen;
     doomdata_t		sw;
-				
+
     fromlen = sizeof(fromaddress);
     c = recvfrom (insocket, &sw, sizeof(sw), 0
 		  , (struct sockaddr *)&fromaddress, &fromlen );
