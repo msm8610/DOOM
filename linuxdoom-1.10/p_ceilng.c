@@ -20,8 +20,8 @@
 //
 //-----------------------------------------------------------------------------
 
-static const char
-rcsid[] = "$Id: p_ceilng.c,v 1.4 1997/02/03 16:47:53 b1 Exp $";
+//static const char
+//rcsid[] = "$Id: p_ceilng.c,v 1.4 1997/02/03 16:47:53 b1 Exp $";
 
 
 #include "z_zone.h"
@@ -52,7 +52,7 @@ ceiling_t*	activeceilings[MAXCEILINGS];
 void T_MoveCeiling (ceiling_t* ceiling)
 {
     result_e	res;
-	
+
     switch(ceiling->direction)
     {
       case 0:

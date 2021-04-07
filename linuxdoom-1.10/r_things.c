@@ -22,8 +22,8 @@
 //-----------------------------------------------------------------------------
 
 
-static const char
-rcsid[] = "$Id: r_things.c,v 1.5 1997/02/03 16:47:56 b1 Exp $";
+//static const char
+/rcsid[] = "$Id: r_things.c,v 1.5 1997/02/03 16:47:56 b1 Exp $";
 
 
 #include <stdio.h>
@@ -55,7 +55,7 @@ typedef struct
 {
     int		x1;
     int		x2;
-	
+
     int		column;
     int		topclip;
     int		bottomclip;
@@ -110,14 +110,14 @@ R_InstallSpriteLump
   boolean	flipped )
 {
     int		r;
-	
+
     if (frame >= 29 || rotation > 8)
 	I_Error("R_InstallSpriteLump: "
 		"Bad frame characters in lump %i", lump);
-	
+
     if ((int)frame > maxframe)
 	maxframe = frame;
-		
+
     if (rotation == 0)
     {
 	// the lump should be used for all rotations
@@ -128,7 +128,7 @@ R_InstallSpriteLump
 	if (sprtemp[frame].rotate == true)
 	    I_Error ("R_InitSprites: Sprite %s frame %c has rotations "
 		     "and a rot=0 lump", spritename, 'A'+frame);
-			
+
 	sprtemp[frame].rotate = false;
 	for (r=0 ; r<8 ; r++)
 	{
@@ -137,21 +137,21 @@ R_InstallSpriteLump
 	}
 	return;
     }
-	
+
     // the lump is only used for one rotation
     if (sprtemp[frame].rotate == false)
 	I_Error ("R_InitSprites: Sprite %s frame %c has rotations "
 		 "and a rot=0 lump", spritename, 'A'+frame);
-		
+
     sprtemp[frame].rotate = true;
 
     // make 0 based
-    rotation--;		
+    rotation--;
     if (sprtemp[frame].lump[rotation] != -1)
 	I_Error ("R_InitSprites: Sprite %s : %c : %c "
 		 "has two lumps mapped to it",
 		 spritename, 'A'+frame, '1'+rotation);
-		
+
     sprtemp[frame].lump[rotation] = lump - firstspritelump;
     sprtemp[frame].flip[rotation] = (byte)flipped;
 }
@@ -185,22 +185,22 @@ void R_InitSpriteDefs (char** namelist)
     int		start;
     int		end;
     int		patched;
-		
+
     // count the number of sprite names
     check = namelist;
     while (*check != NULL)
 	check++;
 
     numsprites = check-namelist;
-	
+
     if (!numsprites)
 	return;
-		
+
     sprites = Z_Malloc(numsprites *sizeof(*sprites), PU_STATIC, NULL);
-	
+
     start = firstspritelump-1;
     end = lastspritelump+1;
-	
+
     // scan all the lump names for each of the names,
     //  noting the highest frame letter.
     // Just compare 4 characters as ints
@@ -208,10 +208,10 @@ void R_InitSpriteDefs (char** namelist)
     {
 	spritename = namelist[i];
 	memset (sprtemp,-1, sizeof(sprtemp));
-		
+
 	maxframe = -1;
 	intname = *(int *)namelist[i];
-	
+
 	// scan the lumps,
 	//  filling in the frames for whatever is found
 	for (l=start+1 ; l<end ; l++)
@@ -236,16 +236,16 @@ void R_InitSpriteDefs (char** namelist)
 		}
 	    }
 	}
-	
+
 	// check the frames that were found for completeness
 	if (maxframe == -1)
 	{
 	    sprites[i].numframes = 0;
 	    continue;
 	}
-		
+
 	maxframe++;
-	
+
 	for (frame = 0 ; frame < maxframe ; frame++)
 	{
 	    switch ((int)sprtemp[frame].rotate)
@@ -255,11 +255,11 @@ void R_InitSpriteDefs (char** namelist)
 		I_Error ("R_InitSprites: No patches found "
 			 "for %s frame %c", namelist[i], frame+'A');
 		break;
-		
+
 	      case 0:
 		// only the first rotation is needed
 		break;
-			
+
 	      case 1:
 		// must have all 8 frames
 		for (rotation=0 ; rotation<8 ; rotation++)
@@ -270,7 +270,7 @@ void R_InitSpriteDefs (char** namelist)
 		break;
 	    }
 	}
-	
+
 	// allocate space for the frames present and copy sprtemp to it
 	sprites[i].numframes = maxframe;
 	sprites[i].spriteframes = 
@@ -299,12 +299,12 @@ int		newvissprite;
 void R_InitSprites (char** namelist)
 {
     int		i;
-	
+
     for (i=0 ; i<SCREENWIDTH ; i++)
     {
 	negonearray[i] = -1;
     }
-	
+
     R_InitSpriteDefs (namelist);
 }
 
@@ -365,7 +365,7 @@ void R_DrawMaskedColumn (column_t* column)
 
 	dc_yl = (topscreen+FRACUNIT-1)>>FRACBITS;
 	dc_yh = (bottomscreen-1)>>FRACBITS;
-		
+
 	if (dc_yh >= mfloorclip[dc_x])
 	    dc_yh = mfloorclip[dc_x]-1;
 	if (dc_yl <= mceilingclip[dc_x])
