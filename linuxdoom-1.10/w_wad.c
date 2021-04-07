@@ -290,25 +290,25 @@ void W_Reload (void)
 //  does override all earlier ones.
 //
 void W_InitMultipleFiles (char** filenames)
-{	
+{
     int		size;
-    
+
     // open all the files, load headers, and count lumps
     numlumps = 0;
 
     // will be realloced as lumps are added
-    lumpinfo = malloc(1);	
+    lumpinfo = malloc(1);
 
     for ( ; *filenames ; filenames++)
 	W_AddFile (*filenames);
 
     if (!numlumps)
 	I_Error ("W_InitFiles: no files found");
-    
+
     // set up caching
     size = numlumps * sizeof(*lumpcache);
     lumpcache = malloc (size);
-    
+
     if (!lumpcache)
 	I_Error ("Couldn't allocate lumpcache");
 
@@ -353,9 +353,9 @@ int W_CheckNumForName (char* name)
     union {
 	char	s[9];
 	int	x[2];
-	
+
     } name8;
-    
+
     int		v1;
     int		v2;
     lumpinfo_t*	lump_p;
@@ -367,7 +367,7 @@ int W_CheckNumForName (char* name)
     name8.s[8] = 0;
 
     // case insensitive
-    strupr (name8.s);		
+    strupr (name8.s);
 
     v1 = name8.x[0];
     v2 = name8.x[1];
@@ -401,10 +401,10 @@ int W_GetNumForName (char* name)
     int	i;
 
     i = W_CheckNumForName (name);
-    
+
     if (i == -1)
       I_Error ("W_GetNumForName: %s not found!", name);
-      
+
     return i;
 }
 
@@ -436,14 +436,14 @@ W_ReadLump
     int		c;
     lumpinfo_t*	l;
     int		handle;
-	
+
     if (lump >= numlumps)
 	I_Error ("W_ReadLump: %i >= numlumps",lump);
 
     l = lumpinfo+lump;
-	
+
     // ??? I_BeginRead ();
-	
+
     if (l->handle == -1)
     {
 	// reloadable file, so use open / read / close
@@ -452,17 +452,17 @@ W_ReadLump
     }
     else
 	handle = l->handle;
-		
+
     lseek (handle, l->position, SEEK_SET);
     c = read (handle, dest, l->size);
 
     if (c < l->size)
 	I_Error ("W_ReadLump: only read %i of %i on lump %i",
-		 c,l->size,lump);	
+		 c,l->size,lump);
 
     if (l->handle == -1)
 	close (handle);
-		
+
     // ??? I_EndRead ();
 }
 
@@ -481,11 +481,11 @@ W_CacheLumpNum
 
     if ((unsigned)lump >= numlumps)
 	I_Error ("W_CacheLumpNum: %i >= numlumps",lump);
-		
+
     if (!lumpcache[lump])
     {
 	// read the lump in
-	
+
 	//printf ("cache miss on lump %i\n",lump);
 	ptr = Z_Malloc (W_LumpLength (lump), tag, &lumpcache[lump]);
 	W_ReadLump (lump, lumpcache[lump]);
@@ -495,7 +495,7 @@ W_CacheLumpNum
 	//printf ("cache hit on lump %i\n",lump);
 	Z_ChangeTag (lumpcache[lump],tag);
     }
-	
+
     return lumpcache[lump];
 }
 
