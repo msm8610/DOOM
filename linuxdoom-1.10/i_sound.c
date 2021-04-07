@@ -55,7 +55,7 @@ rcsid[] = "$Id: i_unix.c,v 1.5 1997/02/03 22:45:10 b1 Exp $";
 #include "m_argv.h"
 #include "m_misc.h"
 #include "w_wad.h"
-
+#include <errno.h>
 #include "doomdef.h"
 
 // UNIX hack, to be removed.
@@ -161,11 +161,11 @@ myioctl
 ( int	fd,
   int	command,
   int*	arg )
-{   
+{
     int		rc;
-    extern int	errno;
-    
-    rc = ioctl(fd, command, arg);  
+    //extern int	errno;
+
+    rc = ioctl(fd, command, arg);
     if (rc < 0)
     {
 	fprintf(stderr, "ioctl(dsp,%d,arg) failed\n", command);
